@@ -8,7 +8,6 @@ Affordable housing in the U.S. from income, distance, yard spacing, home spacing
 
 ## Installation
 
-
 -VsCode
 -Juypter Notebook
 -Virtual Environment
@@ -16,7 +15,6 @@ Affordable housing in the U.S. from income, distance, yard spacing, home spacing
 -Apache Airflow
 
 ## Executing program
-
 
 -Python
 -Docker-compose
