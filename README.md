@@ -25,7 +25,6 @@ Affordable housing in the U.S. from income, distance, yard spacing, home spacing
 
 ## Authors
 
-
--Charlie Martinez Dominguez
--Jacky Man
--Raul Sanchez Martinez
+Charlie Martinez Dominguez,
+Jacky Man,
+Raul Sanchez Martinez
