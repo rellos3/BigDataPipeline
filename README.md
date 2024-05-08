@@ -1,7 +1,7 @@
 # BigDataPipeline
 
 ## Description
-Affordable housing in the U.S. from income, distance, yard spacing, home spacing, furnitures, and more that crossing the threshold limit of the individual income.
+Affordable housing in the U.S. from income, distance, yard spacing, home spacing, furnitures, and more that may cross the cost limit threshold of the individual income.
 
 ## Dependencies
 -OS: Windows, Linux
