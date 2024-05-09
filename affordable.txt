@@ -1,0 +1,11 @@
+ID,Location,Price,Income,Family_Size,Num_Bedrooms,Yard_Space,Distance_to_Stores,Crime_Rate,Amenities,Square_Footage,Climate,Transport_Access
+1,Suburban,250000,80000,3,4,Medium,1.5,Low,3,2200,Mild,Excellent
+2,Urban,180000,60000,2,3,Small,0.5,Medium,2,1600,Temperate,Good
+3,Rural,150000,50000,4,3,Large,3.0,Low,2,1800,Harsh,Poor
+4,Suburban,300000,100000,4,5,Medium,2.0,Low,4,2800,Mild,Excellent
+5,Urban,200000,70000,3,3,Small,0.3,High,2,1500,Temperate,Good
+6,Rural,120000,40000,2,2,Large,4.0,Medium,1,1200,Harsh,Poor
+7,Suburban,280000,90000,5,4,Medium,1.0,Low,3,2400,Mild,Excellent
+8,Urban,220000,75000,4,3,Medium,0.8,Medium,2,1800,Temperate,Good
+9,Rural,130000,45000,3,2,Large,5.0,Medium,1,1300,Harsh,Poor
+10,Suburban,320000,110000,6,5,Medium,1.2,Low,4,3000,Mild,Excellent
