@@ -1,6 +1,7 @@
 import json
 import sqlite3
 from datetime import datetime, timedelta
+from os import close
 
 import numpy as np
 import pandas as pd
@@ -22,22 +23,26 @@ def get_data():
     census = response.text
     census = json.loads(census)
     df = pd.DataFrame.from_dict(census)
+    new_header = df.iloc[0]
+    df = df[1:]
+    df.columns = new_header
+
+    print(df.head())
 
     conn = sqlite3.connect("/opt/airflow/dags/census_data.db")
     df.to_sql("data", conn, if_exists="replace")
     print("census database saved")
-    cursor = conn.cursor()
-    print(cursor.execute("SELECT FIRST RMSP FROM data"))
+    conn.commit()
+    conn.close()
 
 
 def format_df():
-    conn = sqlite3.connect("census_data.db")
+    conn = sqlite3.connect("/opt/airflow/dags/census_data.db")
     df = pd.read_sql("SELECT * FROM data", conn)
-    new_header = df.iloc[0]
-    df = df[1:]
-    df.columns = new_header
-    # rooms, income, people in family, commute time, age, disability, sex, marital status, worker class, transportation
+    print(df.head())
+
     df.columns = [
+        "index",
         "ROOMS",
         "INCOME",
         "FAMILY_COUNT",
@@ -71,8 +76,10 @@ def format_df():
 
     # Check new datatypes:
     print(df.info())
-    df.to_csv("census.csv", index=False)
-
+    df.to_sql("int_data", conn, if_exists="replace")
+    print("transformed data saved")
+    conn.commit()
+    conn.close()
 
 dag = DAG(
     "analyze_cenus_housing",
@@ -88,8 +95,8 @@ dag = DAG(
 
 get_data_task = PythonOperator(task_id="get_data", python_callable=get_data, dag=dag)
 
-#format_df_task = PythonOperator(
-#   task_id="format_dataframe", python_callable=format_df, dag=dag
-#)
+format_df_task = PythonOperator(
+  task_id="format_dataframe", python_callable=format_df, dag=dag
+)
 
-get_data_task
+get_data_task >> format_df_task
