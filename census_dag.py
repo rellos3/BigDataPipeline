@@ -81,6 +81,15 @@ def format_df():
     conn.commit()
     conn.close()
 
+
+def summarize_data():
+    conn = sqlite3.connect("/opt/airflow/dags/census_data.db")
+    df = pd.read_sql("SELECT * FROM data", conn)
+    df.drop("ST", axis=1)
+    print(df.mean(numeric_only=True))
+    print(df.median(numeric_only=True))
+
+
 dag = DAG(
     "analyze_cenus_housing",
     default_args={
@@ -96,7 +105,11 @@ dag = DAG(
 get_data_task = PythonOperator(task_id="get_data", python_callable=get_data, dag=dag)
 
 format_df_task = PythonOperator(
-  task_id="format_dataframe", python_callable=format_df, dag=dag
+    task_id="format_dataframe", python_callable=format_df, dag=dag
 )
 
-get_data_task >> format_df_task
+summarize_data_task = PythonOperator(
+    task_id="summarize_data", python_callable=summarize_data, dag=dag
+)
+
+get_data_task >> format_df_task >> summarize_data_task
