@@ -25,7 +25,7 @@ import streamlit as st
 
 
 general_summ = pd.read_csv("summ_columns.csv", index_col=False)
-# general_summ.set_index('STATS', inplace=True)
+st.write("#General Summary")
 roomsum = general_summ[["STATS", "ROOMS"]]
 roomsum.set_index('STATS', inplace=True)
 st.write("# Rooms")
@@ -45,7 +45,20 @@ COMMUTEsum = general_summ[["STATS", "COMMUTE"]]
 COMMUTEsum.set_index('STATS', inplace=True)
 st.write("# Commute")
 st.bar_chart(COMMUTEsum)
-st.write(general_summ)
+
+
+room_summ = pd.read_csv("room_group.csv")
+room_inc = room_summ[["ROOMS","INCOME_mean", "INCOME_median"]]
+room_inc.set_index('ROOMS', inplace=True)
+st.write("# Rooms to Income")
+st.bar_chart(room_inc)
+
+room_summ = pd.read_csv("room_group.csv")
+room_age = room_summ[["ROOMS","AGE_mean", "AGE_median"]]
+room_age.set_index('ROOMS', inplace=True)
+st.write("# Rooms to Age")
+st.bar_chart(room_age)
+st.write(room_summ)
 
 
 dis_summ = pd.read_csv("dis_group.csv")
@@ -56,8 +69,7 @@ gen_summ = pd.read_csv("gen_group.csv")
 st.write(gen_summ)
 
 
-room_summ = pd.read_csv("room_group.csv")
-st.write(room_summ)
+
 
 
 
