@@ -36,7 +36,7 @@ def get_data():
     conn.close()
 
 
-def format_df():
+def clean_data():
     conn = sqlite3.connect("/opt/airflow/dags/census_data.db")
     df = pd.read_sql("SELECT * FROM data", conn)
     print(df.head())
@@ -76,8 +76,13 @@ def format_df():
 
     # Check new datatypes:
     print(df.info())
+
+    filter_df = df[df["INCOME"] >= 0]
+    filter_df = filter_df[filter_df["WORK_CLASS"] != 0]
+
     df.to_sql("int_data", conn, if_exists="replace")
     print("transformed data saved")
+
     conn.commit()
     conn.close()
 
@@ -86,8 +91,26 @@ def summarize_data():
     conn = sqlite3.connect("/opt/airflow/dags/census_data.db")
     df = pd.read_sql("SELECT * FROM data", conn)
     df.drop("ST", axis=1)
-    print(df.mean(numeric_only=True))
-    print(df.median(numeric_only=True))
+
+    summ_columns = df[["ROOMS", "INCOME", "FAMILY_COUNT", "COMMUTE", "AGE"]].agg(
+        ["mean", "median", "min", "max"]
+    )
+    summ_columns.to_csv("summ_columns.csv")
+
+    gen_group = df.groupby("SEX")[
+        ["ROOMS", "INCOME", "FAMILY_COUNT", "COMMUTE", "AGE"]
+    ].agg(["mean", "median", "min", "max"])
+    gen_group.to_csv("gen_group.csv")
+
+    dis_group = df.groupby("DISABILITY")[
+        ["ROOMS", "INCOME", "FAMILY_COUNT", "COMMUTE", "AGE"]
+    ].agg(["mean", "median", "min", "max"])
+    dis_group.to_csv("dis_group")
+
+    room_group = df.groupby("ROOMS")[["INCOME", "FAMILY_COUNT", "COMMUTE", "AGE"]].agg(
+        ["mean", "median"]
+    )
+    room_group.to_csv("room_group.csv")
 
 
 dag = DAG(
@@ -104,12 +127,12 @@ dag = DAG(
 
 get_data_task = PythonOperator(task_id="get_data", python_callable=get_data, dag=dag)
 
-format_df_task = PythonOperator(
-    task_id="format_dataframe", python_callable=format_df, dag=dag
+clean_data_task = PythonOperator(
+    task_id="clean_data", python_callable=clean_data, dag=dag
 )
 
 summarize_data_task = PythonOperator(
     task_id="summarize_data", python_callable=summarize_data, dag=dag
 )
 
-get_data_task >> format_df_task >> summarize_data_task
+get_data_task >> clean_data_task >> summarize_data_task
