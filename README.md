@@ -8,17 +8,17 @@ Affordable housing in the U.S. from income, distance, rooms, and commuting that 
 
 ## Installation
 
-#SQLLite database
+SQLLite database
 
-#VsCode
+VsCode
 
-#Juypter Notebook
+Juypter Notebook
 
-#Virtual Environment
+Virtual Environment
 
-#Docker desktop
+Docker desktop
 
-#Apache Airflow
+Apache Airflow
 
 ## Executing program
 -SQLlite
