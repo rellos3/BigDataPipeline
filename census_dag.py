@@ -92,25 +92,21 @@ def summarize_data():
     df = pd.read_sql("SELECT * FROM data", conn)
     df.drop("ST", axis=1)
 
-    summ_columns = df[["ROOMS", "INCOME", "FAMILY_COUNT", "COMMUTE", "AGE"]].agg(
+    df[["ROOMS", "INCOME", "FAMILY_COUNT", "COMMUTE", "AGE"]].agg(
         ["mean", "median", "min", "max"]
-    )
-    summ_columns.to_csv("summ_columns.csv")
+    ).to_csv("summ_columns.csv")
 
-    gen_group = df.groupby("SEX")[
+    df.groupby("SEX")[
         ["ROOMS", "INCOME", "FAMILY_COUNT", "COMMUTE", "AGE"]
-    ].agg(["mean", "median", "min", "max"])
-    gen_group.to_csv("gen_group.csv")
+    ].agg(["mean", "median", "min", "max"]).to_csv("gen_group.csv")
 
-    dis_group = df.groupby("DISABILITY")[
+    df.groupby("DISABILITY")[
         ["ROOMS", "INCOME", "FAMILY_COUNT", "COMMUTE", "AGE"]
-    ].agg(["mean", "median", "min", "max"])
-    dis_group.to_csv("dis_group")
+    ].agg(["mean", "median", "min", "max"]).to_csv("dis_group.csv")
 
-    room_group = df.groupby("ROOMS")[["INCOME", "FAMILY_COUNT", "COMMUTE", "AGE"]].agg(
+    df.groupby("ROOMS")[["INCOME", "FAMILY_COUNT", "COMMUTE", "AGE"]].agg(
         ["mean", "median"]
-    )
-    room_group.to_csv("room_group.csv")
+    ).to_csv("room_group.csv")
 
 
 dag = DAG(
