@@ -7,12 +7,18 @@ Affordable housing in the U.S. from income, distance, rooms, and commuting that 
 -OS: Windows, Linux
 
 ## Installation
--SQLLite database
--VsCode
--Juypter Notebook
--Virtual Environment
--Docker desktop
--Apache Airflow
+
+#SQLLite database
+
+#VsCode
+
+#Juypter Notebook
+
+#Virtual Environment
+
+#Docker desktop
+
+#Apache Airflow
 
 ## Executing program
 -SQLlite
